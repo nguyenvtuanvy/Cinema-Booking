@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../static//css/login.css">
+</head>
+
+<body>
+    <div class="signup">
+        <div class="div">
+            <img src="../../static/img/shape1.png" alt="LOGO">
+            <!--        <img src="/static/img/2.jpg" alt="LOGO">-->
+        </div>
+        <div class="container">
+            <div class="row signup__content signup__container">
+                <div class="col-8">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="signup__item">
+                                <a class="animate__animated animate__fadeInLeft" href="">
+                                    <img src="../../static//img/galaxy-logo-mobile.074abeac.png" style="width: 200px;"
+                                        alt="abc">
+                                </a>
+                                <h4 class="animate__animated animate__fadeInLeft">Sign In to <br> Rechage Direct</h4>
+                                <p class="animate__animated animate__fadeInLeft">If you have an account You can <a
+                                        href="#">Sign Up</a></p>
+                                <div class="signup__qr animate__animated animate__fadeInLeft ">
+                                    <img src="../../static/img/qr.png" alt="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-8 signup__img">
+                            <div class="signup__blur"></div>
+                            <img class="animate__animated animate__fadeInLeft" src="../../static/img/bg34-1.png" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <form class="signup__form" method="post" role="form" th:action="@{/test/home}"
+                        th:object="${customer}">
+                        <div class="form-group">
+                            <input type="email" class="form-control" id="exampleInputEmail1" th:field="*{email}"
+                                aria-describedby="emailHelp" placeholder="Email address or Mobile Number" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="*****"
+                                th:field="*{password}" required>
+                        </div>
+                        <div class="form-group form-check">
+                            <label class="form-check-label"><a href="#">Recovery Password</a></label>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Sign In</button>
+                    </form>
+                    <div class="sign__line">
+                        <span>Or Continus with</span>
+                    </div>
+                    <div class="signup__icon">
+                        <ul>
+                            <li><a href="#"><i style="color: rgb(50, 50, 243);" class="fa-brands fa-facebook"></i></a>
+                            </li>
+                            <li><a href="#"><i style="color: rgb(248, 55, 55);" class="fa-brands fa-google"></i></a>
+                            </li>
+                            <li><a href="#"><i style="color: rgb(70, 235, 70);" class="fa-brands fa-whatsapp"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

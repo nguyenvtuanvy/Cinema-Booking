@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link rel="stylesheet" href="/static/css/register.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+<section class="vh-100 gradient-custom">
+    <div class="container py-5 h-100">
+        <div class="row justify-content-center align-items-center h-100">
+            <div class="col-12 col-lg-9 col-xl-7">
+                <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
+                    <div class="card-body p-4 p-md-5">
+                        <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Registration Form</h3>
+                        <form method="post" role="form" th:action="@{/test/register/save}" th:object="${customer}">
+
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+
+                                    <div data-mdb-input-init class="form-outline">
+                                        <label class="form-label" for="firstName">Full Name</label>
+                                        <input type="text" placeholder="Enter full name" id="firstName" class="form-control form-control-lg" th:field="*{fullName}" />
+                                        <p th:errors="*{fullName}" class="text-danger" th:if="${#fields.hasErrors('fullName')}"></p>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6 mb-4">
+
+                                    <div data-mdb-input-init class="form-outline">
+                                        <label class="form-label" for="lastName">Phone Number</label>
+                                        <input type="text" placeholder="Enter phone number" id="lastName" class="form-control form-control-lg" th:field="*{phoneNumber}" />
+                                        <p th:errors="*{phoneNumber}" class="text-danger" th:if="${#fields.hasErrors('phoneNumber')}"></p>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-4 d-flex align-items-center">
+
+                                    <div data-mdb-input-init class="form-outline datepicker w-100">
+                                        <label for="birthdayDate" class="form-label">Birthday</label>
+                                        <input type="date" class="form-control form-control-lg" id="birthdayDate" th:field="*{birthday}" />
+                                        <p th:errors="*{birthday}" class="text-danger" th:if="${#fields.hasErrors('birthday')}"></p>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6 mb-4">
+
+                                    <h6 class="mb-2 pb-1">Gender: </h6>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gender" id="femaleGender"
+                                               th:value="1" th:field="*{gender}" checked />
+                                        <label class="form-check-label" for="femaleGender">Female</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gender" id="maleGender"
+                                               th:value="2" th:field="*{gender}" />
+                                        <label class="form-check-label" for="maleGender">Male</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gender" id="otherGender"
+                                               th:value="3" th:field="*{gender}" />
+                                        <label class="form-check-label" for="otherGender">Other</label>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-4 pb-2">
+
+                                    <div data-mdb-input-init class="form-outline">
+                                        <label class="form-label" for="emailAddress">Email</label>
+                                        <input type="email" placeholder="Enter your email" id="emailAddress" class="form-control form-control-lg" th:field="*{email}" />
+                                        <p th:errors="*{email}" class="text-danger" th:if="${#fields.hasErrors('email')}"></p>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6 mb-4 pb-2">
+
+                                    <div data-mdb-input-init class="form-outline">
+                                        <label class="form-label" for="password">Password</label>
+                                        <input type="password" placeholder="Enter your password" id="password" class="form-control form-control-lg" th:field="*{password}" />
+                                        <p th:errors="*{password}" class="text-danger" th:if="${#fields.hasErrors('password')}"></p>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="mt-4 pt-2">
+                                <input class="btn btn-primary btn-lg" type="submit" value="Submit" />
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
