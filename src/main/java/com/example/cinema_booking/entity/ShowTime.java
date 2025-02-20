@@ -22,7 +22,7 @@ public class ShowTime {
     private Long id;
     @Column(name = "date_show", nullable = false)
     private Date dateShow;
-    @Column(name = "start-time", nullable = false)
+    @Column(name = "start_time", nullable = false)
     private Time startTime;
     @Column(name = "price", nullable = false, precision = 10, scale = 0)
     private BigDecimal price;
@@ -30,16 +30,16 @@ public class ShowTime {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "Movie_Showtime",
-            joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id", nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "showtime_id", referencedColumnName = "id", nullable = false)
+            joinColumns = @JoinColumn(name = "showtime_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id")
     )
     private Set<Movie> movies = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "Room_ShowTime",
-            joinColumns = @JoinColumn(name = "room_id", referencedColumnName = "id", nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "showtime_id", referencedColumnName = "id", nullable = false)
+            joinColumns = @JoinColumn(name = "showtime_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "room_id", referencedColumnName = "id")
     )
     private Set<Cinema_Room> cinemaRooms = new HashSet<>();
 

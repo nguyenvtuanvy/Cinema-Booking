@@ -8,11 +8,13 @@ import com.example.cinema_booking.exception.BookingFilmException;
 import com.example.cinema_booking.exception.LoginException;
 import com.example.cinema_booking.repository.*;
 import com.example.cinema_booking.request.BookingFilmRequest;
+import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -23,14 +25,21 @@ public class BookingFileServiceImpl implements BookingFilmService {
     private final TicketRepo ticketRepo;
     private final ShowTimeRepo showTimeRepo;
     private final PromotionRepo promotionRepo;
+    private final EntityManager entityManager;
     @Override
+    @Transactional
     public String BookingFilm(BookingFilmRequest request) throws BookingFilmException, LoginException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             Customer customer = (Customer) authentication.getPrincipal();
             if (customer.getEmail() != null) {
                 ShowTime showTime = showTimeRepo.findById(request.getShowtimeId()).orElseThrow();
-                Promotion promotion = promotionRepo.findById(request.getPromotionId()).orElseThrow();
+
+                Promotion promotion = (request.getPromotionId() != null)
+                        ? promotionRepo.findById(request.getPromotionId()).orElse(null)
+                        : null;
+
+                customer = entityManager.merge(customer);
 
                 Ticket ticket = Ticket.builder()
                         .customer(customer)

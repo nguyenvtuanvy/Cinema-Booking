@@ -23,8 +23,8 @@ public class Category {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "Movie_Category",
-            joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id")
+            joinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id")
     )
     private Set<Movie> movies = new HashSet<>();
 }

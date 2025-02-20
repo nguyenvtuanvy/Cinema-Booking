@@ -15,10 +15,12 @@ public class Chair {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "row_chair", nullable = false)
-    private Integer rowChair;
+    private String rowChair;
+
     @Column(name = "column_chair", nullable = false)
-    private Integer columnChair;
+    private String columnChair;
 
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonIgnore

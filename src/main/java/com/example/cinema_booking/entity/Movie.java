@@ -39,15 +39,27 @@ public class Movie {
     @JoinColumn(name = "director_id", nullable = false, referencedColumnName = "id")
     private Director director;
 
-    @ManyToMany(mappedBy = "movies")
-    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "Movie_Performer",
+            joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "performer_id", referencedColumnName = "id")
+    )
     private Set<Performer> performers = new HashSet<>();
 
-    @ManyToMany(mappedBy = "movies")
-    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "Movie_Category",
+            joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id")
+    )
     private Set<Category> categories = new HashSet<>();
 
-    @ManyToMany(mappedBy = "movies")
-    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "Movie_Showtime",
+            joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "showtime_id", referencedColumnName = "id")
+    )
     private Set<ShowTime> showTimes = new HashSet<>();
 }

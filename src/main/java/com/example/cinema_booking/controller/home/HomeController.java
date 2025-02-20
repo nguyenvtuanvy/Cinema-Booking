@@ -15,20 +15,27 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class HomeController {
     private final AuthenticationService authenticationService;
-    @GetMapping("/demo")
-    public ResponseEntity<String> getText(){
-        return ResponseEntity.ok("Hello Word!!!");
+
+    @GetMapping("")
+    public String home(){
+        return "common/home";
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody RegisterRequest UserRegisterRequest){
-        try{
-            String message = authenticationService.register(UserRegisterRequest);
-            return ResponseEntity.status(HttpStatus.OK).body(message);
-        } catch (RegisterException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
-    }
+
+//    @GetMapping("/demo")
+//    public St getText(){
+//        return ResponseEntity.ok("Hello Word!!!");
+//    }
+
+//    @PostMapping("/register")
+//    public ResponseEntity<?> registerUser(@RequestBody RegisterRequest UserRegisterRequest){
+//        try{
+//            String message = authenticationService.register(UserRegisterRequest);
+//            return ResponseEntity.status(HttpStatus.OK).body(message);
+//        } catch (RegisterException e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+//        }
+//    }
 
 //    @PostMapping("/login")
 //    public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequest UserLoginRequest){
