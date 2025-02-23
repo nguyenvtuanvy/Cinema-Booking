@@ -21,4 +21,12 @@ public class MovieDTO {
     private LocalDateTime releaseDate;
     private String title;
     private Long directorId;
+
+
+
+    public MovieDTO(Long id, String image, String title) {
+        this.id = id;
+        this.image = image;
+        this.title = title;
+    }
 }
