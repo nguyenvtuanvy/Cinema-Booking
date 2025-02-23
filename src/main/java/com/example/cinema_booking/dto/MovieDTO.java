@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @Builder
@@ -18,7 +19,7 @@ public class MovieDTO {
     private String image;
     private String nation;
     private Float rating;
-    private LocalDateTime releaseDate;
+    private Date releaseDate;
     private String title;
     private Long directorId;
 
