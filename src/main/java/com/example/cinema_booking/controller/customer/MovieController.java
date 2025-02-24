@@ -1,11 +1,14 @@
 package com.example.cinema_booking.controller.customer;
 
 import com.example.cinema_booking.dto.MovieDTO;
+import com.example.cinema_booking.dto.ShowDateDTO;
 import com.example.cinema_booking.exception.LoginException;
 import com.example.cinema_booking.exception.MovieException;
 import com.example.cinema_booking.request.AuthenticationRequest;
 import com.example.cinema_booking.response.AuthenticationResponse;
 import com.example.cinema_booking.service.movie.MovieService;
+import com.example.cinema_booking.service.showdate.ShowDateService;
+import com.example.cinema_booking.service.showtime.ShowTimeService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +24,6 @@ import java.util.Set;
 @RequestMapping("/customer")
 @AllArgsConstructor
 public class MovieController {
-    @Autowired
     private final MovieService movieService;
 
     @GetMapping("/movie/{id}")
@@ -36,7 +38,7 @@ public class MovieController {
         }
     }
 
-    @GetMapping("/all")
+    @GetMapping("/movie/all")
     public ResponseEntity<?> findAllMovies() {
         try {
             Set<MovieDTO> movies = movieService.findAllMovie();
@@ -47,4 +49,6 @@ public class MovieController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An internal server error occurred");
         }
     }
+
+
 }

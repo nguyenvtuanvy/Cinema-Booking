@@ -20,8 +20,6 @@ public class ShowTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "date_show", nullable = false)
-    private Date dateShow;
     @Column(name = "start_time", nullable = false)
     private Time startTime;
     @Column(name = "price", nullable = false, precision = 10, scale = 0)
@@ -29,11 +27,11 @@ public class ShowTime {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "Movie_Showtime",
+            name = "ShowDate_ShowTime",
             joinColumns = @JoinColumn(name = "showtime_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id")
+            inverseJoinColumns = @JoinColumn(name = "showdate_id", referencedColumnName = "id")
     )
-    private Set<Movie> movies = new HashSet<>();
+    private Set<ShowDate> showDates = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

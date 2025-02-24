@@ -57,9 +57,9 @@ public class Movie {
 
     @ManyToMany
     @JoinTable(
-            name = "Movie_Showtime",
+            name = "Movie_ShowDate",
             joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "showtime_id", referencedColumnName = "id")
+            inverseJoinColumns = @JoinColumn(name = "showdate_id", referencedColumnName = "id")
     )
-    private Set<ShowTime> showTimes = new HashSet<>();
+    private Set<ShowDate> showDates = new HashSet<>();
 }

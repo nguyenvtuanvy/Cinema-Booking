@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Set;
 
 @Data
 @Builder
@@ -22,12 +23,24 @@ public class MovieDTO {
     private Date releaseDate;
     private String title;
     private Long directorId;
-
+    private Set<ShowDateWithTimeDTO> showDatesWithTimes;
 
 
     public MovieDTO(Long id, String image, String title) {
         this.id = id;
         this.image = image;
         this.title = title;
+    }
+
+    public MovieDTO(Long id, String description, Integer duration, String image, String nation, Float rating, Date releaseDate, String title, Long directorId) {
+        this.id = id;
+        this.description = description;
+        this.duration = duration;
+        this.image = image;
+        this.nation = nation;
+        this.rating = rating;
+        this.releaseDate = releaseDate;
+        this.title = title;
+        this.directorId = directorId;
     }
 }

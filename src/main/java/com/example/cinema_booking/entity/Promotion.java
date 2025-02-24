@@ -24,10 +24,14 @@ public class Promotion {
     private Long id;
     @Column(name = "code", nullable = false, unique = true,length = 10)
     private String code;
+    @Column(name = "title", nullable = false)
+    private String title;
+    @Column(name = "image", nullable = false)
+    private String image;
     @Column(name = "discount_amount", nullable = false)
     private BigDecimal discountAmount;
     @Column(name = "expiration_date", nullable = false)
-    private Date expriationDate;
+    private Date expirationDate;
     @Column(name = "is_used", columnDefinition = "boolean DEFAULT false")
     private Boolean isUsed;
     @CreationTimestamp
