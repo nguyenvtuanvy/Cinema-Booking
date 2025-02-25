@@ -23,7 +23,7 @@ public class Manager implements UserDetails {
     private Long id;
     @Column(name = "email", nullable = false, unique = true, length = 50)
     private String email;
-    @Column(name = "password", nullable = false, length = 20)
+    @Column(name = "password", nullable = false)
     private String password;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

@@ -7,11 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.annotation.SecurityBuilder;
-import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -20,7 +17,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -34,10 +30,10 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("*"));
-        configuration.setAllowedMethods(List.of("*"));
-        configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowCredentials(true);
+        configuration.setAllowedOrigins(List.of("http://localhost:3000")); // Chỉ cho phép frontend từ origin này
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
+        configuration.setAllowCredentials(true); // Cho phép gửi credentials (cookie, token)
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
@@ -45,17 +41,32 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(@NonNull HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/**", "/home/**", "/test/**", "/css/**", "/img/**", "/responsive/**").permitAll()
-                        .requestMatchers("/customer/**").hasRole("USER")
+        http
+                // Tắt CSRF vì sử dụng JWT
+                .csrf(AbstractHttpConfigurer::disable)
+
+                // Cấu hình CORS
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+
+                // Cấu hình phân quyền
+                .authorizeHttpRequests(auth -> auth
+                        // Các endpoint công khai
+                        .requestMatchers("/auth/**", "/public/**", "/home/**", "/test/**", "/css/**", "/img/**", "/responsive/**").permitAll()
+
+                        // Các endpoint yêu cầu xác thực và phân quyền
+                        .requestMatchers("/customer/**").hasAuthority("ROLE_USER") // Yêu cầu quyền USER
+                        .requestMatchers("/manager/**").hasAuthority("ROLE_ADMIN") // Yêu cầu quyền ADMIN
+
+                        // Tất cả các request khác yêu cầu xác thực
                         .anyRequest().authenticated()
                 )
-                .cors(Cors -> Cors.configurationSource(corsConfigurationSource()))
-                .sessionManagement((sessionmanagement) -> sessionmanagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(provider)
+
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+
                 .addFilterBefore(jwtAuthorizationFilter, JwtAuthenticationFilter.class);
+
         return http.build();
     }
 }

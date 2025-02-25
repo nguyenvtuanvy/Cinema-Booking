@@ -1,31 +1,38 @@
 package com.example.cinema_booking.service.authentication;
 
 import com.example.cinema_booking.entity.Customer;
+import com.example.cinema_booking.entity.Manager;
+import com.example.cinema_booking.entity.Role;
 import com.example.cinema_booking.exception.LoginException;
 import com.example.cinema_booking.exception.RegisterException;
 import com.example.cinema_booking.repository.CustomerRepo;
+import com.example.cinema_booking.repository.ManagerRepo;
+import com.example.cinema_booking.repository.RoleRepo;
 import com.example.cinema_booking.request.AuthenticationRequest;
+import com.example.cinema_booking.request.ManagerRegisterRequest;
 import com.example.cinema_booking.request.RegisterRequest;
 import com.example.cinema_booking.response.AuthenticationResponse;
 import com.example.cinema_booking.service.jwt.JwtService;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService{
     private final CustomerRepo customerRepo;
+    private final ManagerRepo managerRepo;
+    private final RoleRepo roleRepo;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
     @Override
-    public String register(RegisterRequest request) throws RegisterException {
+    public String registerUser(RegisterRequest request) throws RegisterException {
         if (request.getEmail() != null){
             var customer = customerRepo.findCustomerByEmail(request.getEmail());
             if (customer.isPresent()){
@@ -54,6 +61,32 @@ public class AuthenticationServiceImpl implements AuthenticationService{
     }
 
     @Override
+    @Transactional
+    public String registerAdmin(ManagerRegisterRequest request) throws RegisterException {
+        if (request.getEmail() != null){
+            var manager = managerRepo.findManagerByEmail(request.getEmail());
+            if (manager.isPresent()){
+                throw new RegisterException("Email đã được sử dụng để đăng ký");
+            }
+        }
+
+        try {
+            Role role = roleRepo.findById(1L).orElseThrow();
+            Manager manager = Manager.builder()
+                    .email(request.getEmail())
+                    .password(passwordEncoder.encode(request.getPassword()))
+                    .role(role)
+                    .build();
+
+            managerRepo.save(manager);
+
+            return "Đăng ký thành công";
+        } catch (Exception e){
+            throw new RegisterException(e.getMessage());
+        }
+    }
+
+    @Override
     public AuthenticationResponse authenticate(AuthenticationRequest request, HttpServletResponse httpServletResponse) throws LoginException {
         try {
             authenticationManager.authenticate(
@@ -63,19 +96,30 @@ public class AuthenticationServiceImpl implements AuthenticationService{
                     )
             );
 
-            var customer = customerRepo.findCustomerByEmail(request.getEmail()).orElseThrow();
+            var customer = customerRepo.findCustomerByEmail(request.getEmail());
+            if (customer.isPresent()) {
+                var token = jwtService.generateToken(customer.get());
+                return AuthenticationResponse.builder()
+                        .userId(customer.get().getId())
+                        .email(customer.get().getEmail())
+                        .token(token)
+                        .role("USER")
+                        .build();
+            }
 
-            var token = jwtService.generateToken(customer);
+            var manager = managerRepo.findManagerByEmail(request.getEmail());
+            if (manager.isPresent()) {
+                var token = jwtService.generateToken(manager.get());
+                return AuthenticationResponse.builder()
+                        .userId(manager.get().getId())
+                        .email(manager.get().getEmail())
+                        .token(token)
+                        .role("ADMIN")
+                        .build();
+            }
 
-            Cookie cookie = new Cookie("token", token);
-            cookie.setSecure(false);
-            cookie.setHttpOnly(true);
-            httpServletResponse.addCookie(cookie);
-
-            return AuthenticationResponse.builder()
-                    .token(token)
-                    .build();
-        } catch (Exception e){
+            throw new LoginException("Email hoặc mật khẩu không chính xác");
+        } catch (Exception e) {
             throw new LoginException(e.getMessage());
         }
     }

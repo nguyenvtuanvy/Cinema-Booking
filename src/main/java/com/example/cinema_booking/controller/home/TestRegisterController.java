@@ -26,7 +26,7 @@ public class TestRegisterController {
     @PostMapping("/register/save")
     public String TestRegisterSave(@Valid @ModelAttribute("customer") RegisterRequest registerRequest,
                                    Model model) throws RegisterException {
-        String message = authenticationService.register(registerRequest);
+        String message = authenticationService.registerUser(registerRequest);
         model.addAttribute("message", message);
         return "common/home";
     }

@@ -1,5 +1,6 @@
-package com.example.cinema_booking.response;
+package com.example.cinema_booking.request;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,9 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthenticationResponse {
-    private Long userId;
+public class ManagerRegisterRequest {
     private String email;
-    private String role;
-    private String token;
+    private String password;
 }
