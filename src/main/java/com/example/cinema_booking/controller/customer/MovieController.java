@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/customer")
+@RequestMapping("/auth")
 @AllArgsConstructor
 public class MovieController {
     private final MovieService movieService;

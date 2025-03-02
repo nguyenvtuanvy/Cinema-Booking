@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/customer")
+@RequestMapping("/auth")
 @AllArgsConstructor
 public class PromotionController {
     @Autowired

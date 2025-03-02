@@ -10,4 +10,6 @@ public interface MovieService {
     MovieDTO findMovieById(Long id) throws MovieException, ShowDateException;
 
     Set<MovieDTO> findAllMovie() throws MovieException;
+
+
 }
