@@ -1,5 +1,6 @@
 package com.example.cinema_booking.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,6 +21,7 @@ public class MovieDTO {
     private String image;
     private String nation;
     private Float rating;
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private Date releaseDate;
     private String title;
     private Long directorId;

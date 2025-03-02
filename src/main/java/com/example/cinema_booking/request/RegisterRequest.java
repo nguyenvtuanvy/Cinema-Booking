@@ -1,5 +1,6 @@
 package com.example.cinema_booking.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
@@ -24,6 +25,7 @@ public class RegisterRequest {
     private String phoneNumber;
     @NotNull(message = "Birthday cannot be null")
     @Past(message = "Birthday must be in the past")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;
     @NotNull(message = "Gender should not be null")
     @Min(value = 0, message = "Gender should be a positive number or zero")
