@@ -17,4 +17,5 @@ public class ChairDTO {
     private String roomName;
     private BigDecimal price;
     private Long showTimeId;
+    private int status;
 }
