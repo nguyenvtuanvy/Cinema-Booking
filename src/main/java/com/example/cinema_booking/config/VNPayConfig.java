@@ -1,77 +1,92 @@
 package com.example.cinema_booking.config;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
+@Component
 public class VNPayConfig {
-    public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-    public static String vnp_Return_url = "/vnpay-payment-return";
-    public static String vnp_TmnCode = "LDR1I18I";
-    public static String vnp_HashSecret = "FHMBB2AS8HJJBO8OLA8MZQCFJ7TP0KRB";
-    public static String vnp_apiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
+    @Value("${vnpay.payurl}")
+    private String vnp_PayUrl;
 
+    @Value("${vnpay.tmncode}")
+    private String vnp_TmnCode;
 
-    public static String hashAllFields(Map fields) {
-        List fieldNames = new ArrayList(fields.keySet());
-        Collections.sort(fieldNames);
-        StringBuilder sb = new StringBuilder();
-        Iterator itr = fieldNames.iterator();
-        while (itr.hasNext()) {
-            String fieldName = (String) itr.next();
-            String fieldValue = (String) fields.get(fieldName);
-            if ((fieldValue != null) && (fieldValue.length() > 0)) {
-                sb.append(fieldName);
-                sb.append("=");
-                sb.append(fieldValue);
-            }
-            if (itr.hasNext()) {
-                sb.append("&");
-            }
-        }
-        return hmacSHA512(vnp_HashSecret,sb.toString());
+    @Value("${vnpay.secret}")
+    private String vnp_HashSecret;
+
+    public static String vnp_ReturnUrl = "/api/v1/customer/vnpay/payment-return";
+//    public static String vnp_apiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
+
+    // Getter methods
+    public String getVnpPayUrl() {
+        return vnp_PayUrl;
     }
 
-    public static String hmacSHA512(final String key, final String data) {
-        try {
+    public String getVnpTmnCode() {
+        return vnp_TmnCode;
+    }
 
-            if (key == null || data == null) {
-                throw new NullPointerException();
+    public String getVnpHashSecret() {
+        return vnp_HashSecret;
+    }
+
+    // Phương thức hashAllFields
+    public String hashAllFields(Map<String, String> fields) {
+        List<String> fieldNames = new ArrayList<>(fields.keySet());
+        Collections.sort(fieldNames);
+        StringBuilder sb = new StringBuilder();
+        Iterator<String> itr = fieldNames.iterator();
+        while (itr.hasNext()) {
+            String fieldName = itr.next();
+            String fieldValue = fields.get(fieldName);
+            if (fieldValue != null && !fieldValue.isEmpty()) {
+                sb.append(fieldName).append("=").append(fieldValue);
+                if (itr.hasNext()) {
+                    sb.append("&");
+                }
             }
-            final Mac hmac512 = Mac.getInstance("HmacSHA512");
-            byte[] hmacKeyBytes = key.getBytes();
-            final SecretKeySpec secretKey = new SecretKeySpec(hmacKeyBytes, "HmacSHA512");
+        }
+        return hmacSHA512(vnp_HashSecret, sb.toString());
+    }
+
+    // Phương thức hmacSHA512
+    public String hmacSHA512(final String key, final String data) {
+        try {
+            if (key == null || data == null) {
+                throw new NullPointerException("Key and data must not be null");
+            }
+            Mac hmac512 = Mac.getInstance("HmacSHA512");
+            SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(), "HmacSHA512");
             hmac512.init(secretKey);
-            byte[] dataBytes = data.getBytes(StandardCharsets.UTF_8);
-            byte[] result = hmac512.doFinal(dataBytes);
+            byte[] result = hmac512.doFinal(data.getBytes(StandardCharsets.UTF_8));
             StringBuilder sb = new StringBuilder(2 * result.length);
             for (byte b : result) {
                 sb.append(String.format("%02x", b & 0xff));
             }
             return sb.toString();
-
         } catch (Exception ex) {
-            return "";
+            throw new RuntimeException("Failed to calculate HMAC-SHA512", ex);
         }
     }
 
-    public static String getIpAddress(HttpServletRequest request) {
-        String ipAdress;
-        try {
-            ipAdress = request.getHeader("X-FORWARDED-FOR");
-            if (ipAdress == null) {
-                ipAdress = request.getLocalAddr();
-            }
-        } catch (Exception e) {
-            ipAdress = "Invalid IP:" + e.getMessage();
+    // Phương thức getIpAddress
+    public String getIpAddress(HttpServletRequest request) {
+        String ipAddress = request.getHeader("X-FORWARDED-FOR");
+        if (ipAddress == null) {
+            ipAddress = request.getRemoteAddr();
         }
-        return ipAdress;
+        return ipAddress;
     }
 
-    public static String getRandomNumber(int len) {
+    // Phương thức getRandomNumber
+    public String getRandomNumber(int len) {
         Random rnd = new Random();
         String chars = "0123456789";
         StringBuilder sb = new StringBuilder(len);

@@ -8,6 +8,11 @@ import com.example.cinema_booking.exception.BookingFilmException;
 import com.example.cinema_booking.exception.LoginException;
 import com.example.cinema_booking.repository.*;
 import com.example.cinema_booking.request.BookingFilmRequest;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -17,7 +22,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Base64;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -83,9 +92,29 @@ public class BookingFileServiceImpl implements BookingFilmService {
 
         // Kiểm tra xem Ticket có được lưu thành công không
         if (savedTicket != null) {
-            return "Đặt vé xem phim thành công";
+            String qrCodeData = "Mã vé: " + UUID.randomUUID().toString() + "\n"
+                    + "Tên phim: " + savedTicket.getNameMovie() + "\n"
+                    + "Phòng: " + savedTicket.getNameRoom() + "\n"
+                    + "Suất chiếu: " + savedTicket.getShowTime().getStartTime().toString() + "\n"
+                    + "Ghế: " + savedTicket.getNameChair() + "\n"
+                    + "Giá vé: " + savedTicket.getTotalPrice();
+
+            return generateQRCodeBase64(qrCodeData);
         } else {
             throw new BookingFilmException("Đặt vé xem phim thất bại");
+        }
+    }
+
+    private String generateQRCodeBase64(String data) {
+        try {
+            QRCodeWriter qrCodeWriter = new QRCodeWriter();
+            BitMatrix bitMatrix = qrCodeWriter.encode(data, BarcodeFormat.QR_CODE, 200, 200);
+
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            MatrixToImageWriter.writeToStream(bitMatrix, "PNG", outputStream);
+            return Base64.getEncoder().encodeToString(outputStream.toByteArray());
+        } catch (WriterException | IOException e) {
+            throw new RuntimeException("Failed to generate QR code", e);
         }
     }
 }
