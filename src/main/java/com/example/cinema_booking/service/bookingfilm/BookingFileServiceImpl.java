@@ -84,6 +84,7 @@ public class BookingFileServiceImpl implements BookingFilmService {
                 .nameChair(request.getNameChair())
                 .numberChair(request.getNumberChair())
                 .totalPrice(request.getTotalPrice())
+                .showDate(request.getShowDate())
                 .bookingDate(LocalDate.now())
                 .build();
 
@@ -104,6 +105,9 @@ public class BookingFileServiceImpl implements BookingFilmService {
             throw new BookingFilmException("Đặt vé xem phim thất bại");
         }
     }
+
+
+
 
     private String generateQRCodeBase64(String data) {
         try {

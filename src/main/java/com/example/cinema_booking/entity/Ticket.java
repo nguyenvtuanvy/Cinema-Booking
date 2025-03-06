@@ -33,6 +33,12 @@ public class Ticket {
     private BigDecimal totalPrice;
     @Column(name = "booking_date", nullable = false)
     private LocalDate bookingDate;
+    @Column(name = "status", columnDefinition = "int default 1")
+    @Builder.Default
+    private Integer status = 1;
+    @Column(name = "show_date", nullable = false)
+    private LocalDate showDate;
+
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JsonIgnore
