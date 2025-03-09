@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.sql.Time;
 import java.time.LocalDate;
 
 @Data
@@ -27,15 +28,16 @@ public class TicketDTO {
     private BigDecimal totalPrice;
     private Long customerId;
     private Long promotionId;
-    private Long showtimeId;
+    private Time showtime;
 
-    public TicketDTO(Long id, LocalDate showDate, String nameChair, String nameMovie, String nameRoom, BigDecimal totalPrice, Long showtimeId) {
+
+    public TicketDTO(Long id, LocalDate showDate, String nameChair, String nameMovie, String nameRoom, BigDecimal totalPrice, Time showtime) {
         this.id = id;
         this.showDate = showDate;
         this.nameChair = nameChair;
         this.nameMovie = nameMovie;
         this.nameRoom = nameRoom;
         this.totalPrice = totalPrice;
-        this.showtimeId = showtimeId;
+        this.showtime = showtime;
     }
 }
