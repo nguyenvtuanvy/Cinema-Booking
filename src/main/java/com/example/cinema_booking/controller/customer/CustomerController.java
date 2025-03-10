@@ -41,4 +41,29 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Đã xảy ra lỗi: " + ex.getMessage());
         }
     }
+
+    @PostMapping("/send-otp-email")
+    public ResponseEntity<String> sendOTPByEmail(@RequestParam String email) {
+        try {
+            String response = customerService.sendOTPByEmail(email);
+            return ResponseEntity.ok(response);
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Đã xảy ra lỗi: " + ex.getMessage());
+        }
+    }
+
+    @PostMapping("/verify-otp")
+    public ResponseEntity<String> verifyOTP(@RequestParam String email, @RequestParam String otp) {
+        String response = customerService.verifyOTP(email, otp);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<String> changePassword(
+            @RequestParam String email,
+            @RequestParam String newPassword
+    ) {
+        String response = customerService.changePassword(email, newPassword);
+        return ResponseEntity.ok(response);
+    }
 }
