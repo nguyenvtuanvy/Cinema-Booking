@@ -45,4 +45,14 @@ public class MovieDTO {
         this.title = title;
         this.directorId = directorId;
     }
+
+    public MovieDTO(String description, Integer duration, String image, String nation, Date releaseDate, String title, Long directorId) {
+        this.description = description;
+        this.duration = duration;
+        this.image = image;
+        this.nation = nation;
+        this.releaseDate = releaseDate;
+        this.title = title;
+        this.directorId = directorId;
+    }
 }
