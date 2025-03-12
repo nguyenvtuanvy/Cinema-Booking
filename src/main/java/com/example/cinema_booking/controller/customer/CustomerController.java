@@ -25,7 +25,6 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Đã xảy ra lỗi: " + ex.getMessage());
         }
     }
-
     @PutMapping("/profile/{customerId}")
     public ResponseEntity<?> updateCustomerProfile(
             @PathVariable Long customerId,

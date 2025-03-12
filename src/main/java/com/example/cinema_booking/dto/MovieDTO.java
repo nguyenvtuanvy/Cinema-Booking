@@ -24,7 +24,8 @@ public class MovieDTO {
     @JsonFormat(pattern = "dd-MM-yyyy")
     private Date releaseDate;
     private String title;
-    private Long directorId;
+    private String director;
+    private Set<PerformerDTO> performers;
     private Set<ShowDateWithTimeDTO> showDatesWithTimes;
 
 
@@ -34,7 +35,7 @@ public class MovieDTO {
         this.title = title;
     }
 
-    public MovieDTO(Long id, String description, Integer duration, String image, String nation, Float rating, Date releaseDate, String title, Long directorId) {
+    public MovieDTO(Long id, String description, Integer duration, String image, String nation, Float rating, Date releaseDate, String title, String director) {
         this.id = id;
         this.description = description;
         this.duration = duration;
@@ -43,6 +44,6 @@ public class MovieDTO {
         this.rating = rating;
         this.releaseDate = releaseDate;
         this.title = title;
-        this.directorId = directorId;
+        this.director = director;
     }
 }

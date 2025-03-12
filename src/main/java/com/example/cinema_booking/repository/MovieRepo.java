@@ -14,6 +14,9 @@ public interface MovieRepo extends JpaRepository<Movie, Long> {
     @Query("select new com.example.cinema_booking.dto.MovieDTO(m.id, m.image, m.title) from Movie m")
     Set<MovieDTO> findAllMovie();
 
-    @Query("SELECT new com.example.cinema_booking.dto.MovieDTO(m.id, m.description, m.duration, m.image, m.nation, m.rating, m.releaseDate, m.title, m.director.id) FROM Movie m WHERE m.id = :id")
+    @Query("SELECT new com.example.cinema_booking.dto.MovieDTO(m.id, m.description, m.duration, m.image, m.nation, m.rating, m.releaseDate, m.title, d.name) " +
+            "FROM Movie m " +
+            "JOIN m.director d " +
+            "WHERE m.id = :id")
     Optional<MovieDTO> findMovieById(@Param("id") Long id);
 }

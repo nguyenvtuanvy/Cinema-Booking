@@ -117,7 +117,6 @@ public class AuthenticationServiceImpl implements AuthenticationService{
                         .role("ADMIN")
                         .build();
             }
-
             throw new LoginException("Email hoặc mật khẩu không chính xác");
         } catch (Exception e) {
             throw new LoginException(e.getMessage());
