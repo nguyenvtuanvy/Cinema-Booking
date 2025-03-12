@@ -21,6 +21,6 @@ public interface TicketRepo extends JpaRepository<Ticket, Long> {
 
     @Modifying
     @Transactional
-    @Query("UPDATE Ticket t SET t.status = 0 WHERE t.id = :ticketId")
+    @Query("UPDATE Ticket t SET t.status = 0, t.nameChair = '' WHERE t.id = :ticketId")
     void cancelTicket(@Param("ticketId") Long ticketId);
 }

@@ -27,4 +27,10 @@ public interface CustomerRepo extends JpaRepository<Customer, Long> {
             @Param("gender") String gender,
             @Param("phoneNumber") String phoneNumber
     );
+
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Customer c SET c.password = :newPassword WHERE c.email = :email")
+    void updatePasswordByEmail(@Param("email") String email, @Param("newPassword") String newPassword);
 }

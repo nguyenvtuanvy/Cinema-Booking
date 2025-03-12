@@ -11,5 +11,5 @@ public interface MovieService {
 
     Set<MovieDTO> findAllMovie() throws MovieException;
 
-
+    String createMovie(MovieDTO movieDTO) throws MovieException;
 }

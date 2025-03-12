@@ -31,10 +31,10 @@ public class Movie {
     private Date releaseDate;
     @Column(name = "duration", nullable = false)
     private Integer duration;
-    @Column(name = "rating", nullable = false)
+    @Column(name = "rating")
     private Float rating;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JsonIgnore
     @JoinColumn(name = "director_id", nullable = false, referencedColumnName = "id")
     private Director director;

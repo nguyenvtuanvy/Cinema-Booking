@@ -27,6 +27,7 @@ public class MovieDTO {
     private String director;
     private Set<PerformerDTO> performers;
     private Set<ShowDateWithTimeDTO> showDatesWithTimes;
+    private Long directorId;
 
 
     public MovieDTO(Long id, String image, String title) {
@@ -45,5 +46,15 @@ public class MovieDTO {
         this.releaseDate = releaseDate;
         this.title = title;
         this.director = director;
+    }
+
+    public MovieDTO(String description, Integer duration, String image, String nation, Date releaseDate, String title, Long directorId) {
+        this.description = description;
+        this.duration = duration;
+        this.image = image;
+        this.nation = nation;
+        this.releaseDate = releaseDate;
+        this.title = title;
+        this.directorId = directorId;
     }
 }
